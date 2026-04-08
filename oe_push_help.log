@@ -1,0 +1,31 @@
+                                                                               
+ Usage: openenv push [OPTIONS] [DIRECTORY]                                     
+                                                                               
+ Push an OpenEnv environment to Hugging Face Spaces or custom registry         
+                                                                               
++- Arguments -----------------------------------------------------------------+
+|   directory      [DIRECTORY]  Directory containing the OpenEnv environment  |
+|                               (default: current directory)                  |
++-----------------------------------------------------------------------------+
++- Options -------------------------------------------------------------------+
+| --repo-id       -r      TEXT  Repository ID in format 'username/repo-name'  |
+|                               (defaults to 'username/env-name' from         |
+|                               openenv.yaml)                                 |
+| --base-image    -b      TEXT  Base Docker image to use (overrides           |
+|                               Dockerfile FROM)                              |
+| --interface                   Enable web interface (default: True if no     |
+|                               registry specified)                           |
+| --no-interface                Disable web interface                         |
+| --registry              TEXT  Custom registry URL (e.g.,                    |
+|                               docker.io/username). Disables web interface   |
+|                               by default.                                   |
+| --private                     Deploy the space as private                   |
+| --create-pr                   Create a Pull Request instead of pushing to   |
+|                               the default branch                            |
+| --exclude               TEXT  Optional additional ignore file with          |
+|                               newline-separated glob patterns to exclude    |
+|                               from Hugging Face uploads                     |
+| --help                        Show this message and exit.                   |
++-----------------------------------------------------------------------------+
+
+
