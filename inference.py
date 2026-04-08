@@ -39,7 +39,7 @@ from openai import OpenAI
 # ── Configuration ────────────────────────────────────────────────────────────
 API_BASE_URL: str = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME:   str = os.getenv("MODEL_NAME",   "Qwen/Qwen2.5-72B-Instruct")
-API_KEY:      str = os.getenv("HF_TOKEN", os.getenv("API_KEY", "dummy"))
+HF_TOKEN:     str = os.getenv("HF_TOKEN")  # no default — must be set by runner
 
 ENV_BASE_URL:  str = os.getenv("INCIDENTOPS_URL", "http://localhost:7860")
 IMAGE_NAME:    str = os.getenv("IMAGE_NAME", "incidentops")
@@ -326,7 +326,7 @@ def run_task(task: str, llm: OpenAI) -> float:
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 def main() -> None:
-    llm = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
+    llm = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN)
 
     all_scores: Dict[str, float] = {}
     for task in TASK_CONFIG:
