@@ -145,6 +145,9 @@ def step(req: StepRequest) -> StepResponse:
             from server.graders.full_response_grader import grade_full_response
             reward.value = grade_full_response(env)
 
+        # Defensive clamp — prevent Pydantic ge/le validation errors from float rounding
+        reward.value = round(max(0.0, min(reward.value, 1.0)), 4)
+
     return StepResponse(observation=obs, reward=reward, done=done, info=info)
 
 
