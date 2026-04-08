@@ -1,0 +1,76 @@
+{
+  "real_alerts": [
+    {
+      "alert_id": "a1",
+      "title": "5xx error rate spike on order-service",
+      "service": "order-service",
+      "timestamp": "2023-10-01T00:33:00Z",
+      "raw_value": 7.8,
+      "threshold": 1.0,
+      "true_severity": "P0",
+      "true_team": "backend"
+    },
+    {
+      "alert_id": "a2",
+      "title": "Frontend load time degradation",
+      "service": "frontend",
+      "timestamp": "2023-10-01T00:35:00Z",
+      "raw_value": 3.2,
+      "threshold": 3.0,
+      "true_severity": "P2",
+      "true_team": "frontend"
+    },
+    {
+      "alert_id": "a3",
+      "title": "Database connection pool at 95% capacity",
+      "service": "db-cluster",
+      "timestamp": "2023-10-01T00:36:00Z",
+      "raw_value": 950,
+      "threshold": 900,
+      "true_severity": "P0",
+      "true_team": "infra"
+    },
+    {
+      "alert_id": "a4",
+      "title": "Payment-api memory usage elevated",
+      "service": "payment-api",
+      "timestamp": "2023-10-01T00:38:00Z",
+      "raw_value": 82.0,
+      "threshold": 80.0,
+      "true_severity": "P1",
+      "true_team": "backend"
+    },
+    {
+      "alert_id": "a5",
+      "title": "Data pipeline sync lag exceeding SLA",
+      "service": "data-pipeline",
+      "timestamp": "2023-10-01T00:40:00Z",
+      "raw_value": 320,
+      "threshold": 120,
+      "true_severity": "P1",
+      "true_team": "data"
+    },
+    {
+      "alert_id": "a6",
+      "title": "Suspicious login volume spike from unknown IPs",
+      "service": "auth-service",
+      "timestamp": "2023-10-01T00:42:00Z",
+      "raw_value": 450,
+      "threshold": 200,
+      "true_severity": "P1",
+      "true_team": "security"
+    }
+  ],
+  "root_anomaly": {
+    "metric": "order-service.requests_5xx",
+    "start_min": 30,
+    "end_min": 60
+  },
+  "root_cause_keywords": {
+    "required": ["order-service", "5xx"],
+    "supporting": ["error rate", "cascading"],
+    "wrong": ["dns", "hardware"]
+  },
+  "valid_fixes": ["restart_order_service", "clear_cache"],
+  "relevant_services": ["order-service", "payment-api", "db-cluster"]
+}

@@ -1,0 +1,63 @@
+{
+  "real_alerts": [
+    {
+      "alert_id": "a1",
+      "title": "High CPU on payment-api",
+      "service": "payment-api",
+      "timestamp": "2023-10-01T00:35:00Z",
+      "raw_value": 95.0,
+      "threshold": 90.0,
+      "true_severity": "P1",
+      "true_team": "backend"
+    },
+    {
+      "alert_id": "a2",
+      "title": "5xx error rate spike in order-service",
+      "service": "order-service",
+      "timestamp": "2023-10-01T00:38:00Z",
+      "raw_value": 5.2,
+      "threshold": 1.0,
+      "true_severity": "P0",
+      "true_team": "backend"
+    },
+    {
+      "alert_id": "a3",
+      "title": "Database connections Maxed",
+      "service": "db-cluster",
+      "timestamp": "2023-10-01T00:40:00Z",
+      "raw_value": 1000.0,
+      "threshold": 900.0,
+      "true_severity": "P0",
+      "true_team": "infra"
+    },
+    {
+      "alert_id": "a4",
+      "title": "Memory leak detected",
+      "service": "payment-api",
+      "timestamp": "2023-10-01T00:42:00Z",
+      "raw_value": 85.0,
+      "threshold": 80.0,
+      "true_severity": "P1",
+      "true_team": "backend"
+    }
+  ],
+  "root_anomaly": {
+    "metric": "payment-api.cpu_percent",
+    "start_min": 30,
+    "end_min": 60
+  },
+  "dependents": [
+    {
+      "service": "order-service",
+      "metric": "order-service.requests_5xx",
+      "cascade_factor": 2
+    }
+  ],
+  "root_cause_keywords": {
+    "required": ["payment-api", "memory", "v2.4.1"],
+    "supporting": ["connection pool", "exhausted", "OOM"],
+    "wrong": ["DNS", "network partition", "database hardware"]
+  },
+  "valid_fixes": ["rollback_payment_api", "increase_db_pool"],
+  "relevant_services": ["payment-api", "order-service", "db-cluster"]
+}

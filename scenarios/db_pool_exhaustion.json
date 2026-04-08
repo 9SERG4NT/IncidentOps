@@ -1,0 +1,68 @@
+{
+  "real_alerts": [
+    {
+      "alert_id": "a1",
+      "title": "DB Connection Pool Exhausted",
+      "service": "db-cluster",
+      "timestamp": "2023-10-01T00:35:00Z",
+      "raw_value": 100,
+      "threshold": 90.0,
+      "true_severity": "P0",
+      "true_team": "infra"
+    },
+    {
+      "alert_id": "a2",
+      "title": "Payment-api returning 503 Service Unavailable",
+      "service": "payment-api",
+      "timestamp": "2023-10-01T00:37:00Z",
+      "raw_value": 12.5,
+      "threshold": 1.0,
+      "true_severity": "P0",
+      "true_team": "backend"
+    },
+    {
+      "alert_id": "a3",
+      "title": "Order-service request latency p99 extreme",
+      "service": "order-service",
+      "timestamp": "2023-10-01T00:39:00Z",
+      "raw_value": 8500,
+      "threshold": 2000,
+      "true_severity": "P1",
+      "true_team": "backend"
+    },
+    {
+      "alert_id": "a4",
+      "title": "Data pipeline backpressure — queue depth growing",
+      "service": "data-pipeline",
+      "timestamp": "2023-10-01T00:41:00Z",
+      "raw_value": 15000,
+      "threshold": 5000,
+      "true_severity": "P1",
+      "true_team": "data"
+    }
+  ],
+  "root_anomaly": {
+    "metric": "db-cluster.cpu_percent",
+    "start_min": 30,
+    "end_min": 60
+  },
+  "dependents": [
+    {
+      "service": "payment-api",
+      "metric": "payment-api.requests_5xx",
+      "cascade_factor": 4
+    },
+    {
+      "service": "order-service",
+      "metric": "order-service.requests_5xx",
+      "cascade_factor": 3
+    }
+  ],
+  "root_cause_keywords": {
+    "required": ["db-cluster", "connection pool", "exhausted"],
+    "supporting": ["payment-api", "cascade", "5xx", "timeout"],
+    "wrong": ["malware", "dns", "network partition"]
+  },
+  "valid_fixes": ["restart_db", "scale_db"],
+  "relevant_services": ["payment-api", "order-service", "db-cluster"]
+}

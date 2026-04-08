@@ -1,0 +1,104 @@
+name: incidentops
+version: "1.0.0"
+description: >
+  IncidentOps is a production incident response and root cause analysis
+  simulator. The agent takes the role of a Site Reliability Engineer (SRE)
+  receiving live alerts, logs, and metrics from a synthetic microservices
+  stack. It must triage alerts, investigate evidence, pinpoint root causes,
+  apply fixes, and draft runbooks — exactly as human SREs do in the field.
+author: IncidentOps Team
+license: MIT
+tags:
+  - openenv
+  - incident-response
+  - sre
+  - root-cause-analysis
+  - production-systems
+
+base_url: "http://localhost:7860"
+
+tasks:
+  - id: alert-triage
+    difficulty: easy
+    max_steps: 5
+    description: >
+      Classify 6 real alerts (mixed with 4–7 noise) and route each
+      to the correct on-call team. Scored on severity accuracy and
+      team routing accuracy.
+
+  - id: root-cause-analysis
+    difficulty: medium
+    max_steps: 12
+    description: >
+      Given a log dump and metric time-series showing cascading anomalies,
+      query evidence and submit a hypothesis that identifies the root service,
+      failure mechanism, and triggering event (e.g. bad deploy).
+
+  - id: full-incident-response
+    difficulty: hard
+    max_steps: 20
+    description: >
+      Full SRE workflow: triage P0 alerts, investigate logs and metrics,
+      hypothesize root cause, apply the correct fix, write a structured
+      runbook (symptoms / root cause / fix / prevention), draft customer
+      comms, and close the incident. Scored across all five dimensions.
+
+observation_space:
+  type: structured
+  schema: IncidentObservation
+  fields:
+    - name: alerts
+      type: "List[Alert]"
+      description: "Active alerts (true_severity and true_team hidden from agent)"
+    - name: recent_logs
+      type: "List[LogEntry]"
+      description: "Last 50 log lines, pageable via query_logs action"
+    - name: metrics
+      type: "Dict[str, MetricSeries]"
+      description: "Time-series metrics keyed by service.metric_name"
+    - name: deploy_history
+      type: "List[DeployEvent]"
+      description: "Last 10 CI/CD deploy events across all services"
+    - name: incident_timeline
+      type: "List[str]"
+      description: "Agent's own action history (breadcrumb)"
+    - name: resolution_status
+      type: "str"
+      description: "one of: open | mitigated | closed"
+    - name: runbook_draft
+      type: str
+      description: "Accumulated runbook text written by agent"
+    - name: comms_draft
+      type: str
+      description: "Accumulated customer-facing status text"
+    - name: last_action_result
+      type: str
+      description: "Natural-language feedback on the previous action"
+    - name: done
+      type: bool
+
+action_space:
+  type: structured
+  schema: IncidentAction
+  actions:
+    - type: triage_alert
+      params: [alert_id, severity (P0|P1|P2), team]
+    - type: query_logs
+      params: [service, level (optional)]
+    - type: query_metrics
+      params: [service]
+    - type: page_team
+      params: [team]
+    - type: hypothesize
+      params: [hypothesis]
+    - type: apply_fix
+      params: [fix_id]
+    - type: write_runbook
+      params: [text]
+    - type: write_comms
+      params: [text]
+    - type: close_incident
+      params: []
+
+reward_range: [0.0, 1.0]
+reward_shaping: true
