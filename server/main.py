@@ -50,26 +50,11 @@ class StepResponse(BaseModel):
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
-@app.get("/")
-def root():
-    """Root endpoint — environment info for visitors."""
-    return {
-        "environment": "IncidentOps",
-        "version": "1.0.0",
-        "description": "Production incident response & root cause analysis simulator",
-        "tasks": list(VALID_TASKS),
-        "endpoints": {
-            "POST /reset": "Start a new episode (body: {task, seed})",
-            "POST /step": "Take an action (body: {env_id, action})",
-            "GET /state/{env_id}": "Get current environment state",
-            "GET /tasks": "List available tasks",
-            "GET /health": "Health check",
-            "GET /docs": "Interactive API documentation (Swagger UI)",
-        },
-        "status": "running",
-        "active_envs": len(_envs),
-    }
+import gradio as gr
+from server.ui import build_ui
 
+demo = build_ui()
+app = gr.mount_gradio_app(app, demo, path="/")
 
 @app.get("/health")
 def health():
