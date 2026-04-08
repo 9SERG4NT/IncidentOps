@@ -40,10 +40,11 @@ def take_action(env_id, action_type_str, params_text):
         reward = resp.reward.model_dump()
         done = resp.done
         
+        breakdown_str = ", ".join(f"{k}: {v:.3f}" for k, v in reward.get("breakdown", {}).items())
         status = (
             f"Action '{action_type_str}' executed.\n"
-            f"Step Reward: {reward.get('step_reward', 0):.2f}\n"
-            f"Total Score: {reward.get('score', 0):.2f}\n"
+            f"Reward: {reward.get('value', 0):.4f}\n"
+            f"Breakdown: {breakdown_str or 'none'}\n"
             f"Done: {done}"
         )
         return obs_json, status
