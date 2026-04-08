@@ -105,13 +105,14 @@ def list_tasks():
 
 
 @app.post("/reset")
-def reset(req: ResetRequest) -> dict:
+def reset(req: ResetRequest | None = None) -> dict:
     """
     Start a new environment episode.
 
-    - Accepts `{}` body (uses defaults: task=alert-triage, seed=42).
+    - Accepts `{}` body or no body (uses defaults: task=alert-triage, seed=42).
     - Returns `env_id` for use in subsequent /step and /state calls.
     """
+    req = req or ResetRequest()
     if req.task not in VALID_TASKS:
         raise HTTPException(
             status_code=400,
