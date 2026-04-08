@@ -3,9 +3,10 @@ import gradio as gr
 from pydantic import ValidationError
 
 from server.models import ActionType, IncidentAction
-from server.main import reset as api_reset, step as api_step, VALID_TASKS, ResetRequest, StepRequest
+
 
 def init_environment(task_name):
+    from server.main import reset as api_reset, ResetRequest
     req = ResetRequest(task=task_name, seed=42)
     try:
         resp = api_reset(req)
@@ -25,6 +26,7 @@ def take_action(env_id, action_type_str, params_text):
         return {}, f"Error parsing parameters JSON:\n{e}"
         
     try:
+        from server.main import StepRequest, step as api_step
         action = IncidentAction(action_type=ActionType(action_type_str), parameters=params)
         req = StepRequest(env_id=env_id, action=action)
     except ValidationError as ve:
@@ -78,6 +80,7 @@ def build_ui():
             # LEFT CPNL - Controls
             with gr.Column(scale=1):
                 gr.Markdown("### 1. Control Panel")
+                from server.main import VALID_TASKS
                 task_dropdown = gr.Dropdown(choices=list(VALID_TASKS), value="alert-triage", label="Select Task")
                 init_btn = gr.Button("Initialize Environment", variant="primary")
                 

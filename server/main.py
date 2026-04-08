@@ -50,11 +50,6 @@ class StepResponse(BaseModel):
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
-import gradio as gr
-from server.ui import build_ui
-
-demo = build_ui()
-app = gr.mount_gradio_app(app, demo, path="/")
 
 @app.get("/health")
 def health():
@@ -165,3 +160,9 @@ def state(env_id: str) -> dict:
     if env is None:
         raise HTTPException(status_code=404, detail=f"env_id '{env_id}' not found.")
     return env.state()
+
+import gradio as gr
+from server.ui import build_ui
+
+demo = build_ui()
+app = gr.mount_gradio_app(app, demo, path="/")
