@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "incidentops"
+version = "1.0.0"
+description = "IncidentOps — Production incident response and root cause analysis simulator for OpenEnv"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "IncidentOps Team"},
+]
+keywords = ["openenv", "incident-response", "sre", "root-cause-analysis"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "fastapi==0.111.0",
+    "uvicorn==0.29.0",
+    "pydantic==2.7.1",
+    "openai>=1.30.0",
+    "httpx>=0.25.0",
+    "openenv-core>=0.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
+[project.scripts]
+server = "server.app:main"
+
+[tool.setuptools.packages.find]
+include = ["server*"]
