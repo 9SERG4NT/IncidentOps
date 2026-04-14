@@ -121,7 +121,7 @@ pip install -r requirements.txt
 uvicorn server.main:app --host 0.0.0.0 --port 7860 --reload
 ```
 
-The API docs are available at: **http://localhost:7860/docs**
+The API docs are available at: **(https://huggingface.co/spaces/SERG4NT/incidentops)**
 
 ### Docker
 
